@@ -6,12 +6,36 @@
   <packaging>war</packaging>
   
   <dependencies>
-  <!-- net.sf.json -->
+  	<!-- net.sf.json -->
 	<dependency>  
 	    <groupId>net.sf.json-lib</groupId>  
 	    <artifactId>json-lib</artifactId>  
 	    <version>2.4</version>  
 	    <classifier>jdk15</classifier>  
+	</dependency>
+	<!-- MySQL jdbc -->
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>5.1.43</version>
+	</dependency>
+	<!-- commons-io -->
+	<dependency>
+	    <groupId>commons-io</groupId>
+	    <artifactId>commons-io</artifactId>
+	    <version>2.6</version>
+	</dependency>
+	<!-- log4j -->
+	<dependency>
+	    <groupId>log4j</groupId>
+	    <artifactId>log4j</artifactId>
+	    <version>1.2.17</version>
+	</dependency>
+	<!-- fastjson alibaba -->
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>1.2.47</version>
 	</dependency>
   </dependencies>
   
