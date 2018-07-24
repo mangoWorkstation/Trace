@@ -15,7 +15,7 @@ import net.sf.json.*;
 
 public final class JsonDecodeFormatter {
 	
-	enum dataType{
+	public enum dataType{
 		obj,array
 	}
 	

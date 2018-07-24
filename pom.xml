@@ -25,6 +25,13 @@
 	    <artifactId>commons-io</artifactId>
 	    <version>2.6</version>
 	</dependency>
+	<!-- commons-dbutils -->
+	<dependency>
+	    <groupId>commons-dbutils</groupId>
+	    <artifactId>commons-dbutils</artifactId>
+	    <version>1.6</version>
+	</dependency>
+	
 	<!-- log4j -->
 	<dependency>
 	    <groupId>log4j</groupId>
