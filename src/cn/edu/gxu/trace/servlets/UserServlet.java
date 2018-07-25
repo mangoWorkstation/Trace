@@ -55,7 +55,7 @@ public class UserServlet extends HttpServlet {
 		int code = Integer.valueOf((String)params.get("code"));
 		switch (code) {
 			case 10004:{
-				//请求注册的短信验证码
+				//请求更新用户基础信息
 				updateUserProfile(params, response);
 				return;
 			}
@@ -79,6 +79,10 @@ public class UserServlet extends HttpServlet {
 			user.setProvince(data.get("province"));
 			user.setCity(data.get("city"));
 			user.setCounty(data.get("county"));
+			//证件号检查
+			if(data.get("idNum").length()!=18) {
+				response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal parameters.Check Again."));
+			}
 			user.setIdNum(data.get("idNum"));
 			user.setIdType(Integer.valueOf(data.get("idType")));
 			user.setAddress(data.get("address"));

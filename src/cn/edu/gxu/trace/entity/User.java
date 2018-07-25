@@ -18,6 +18,7 @@ public class User implements UniversalEntity{
 	private int idType;
 	private String address;
 	private String icon_filePath;
+	private int accessLevel;
 	private String authCode;
 	private String authCode_expire_t;
 	private String request_login_t;
@@ -163,6 +164,14 @@ public class User implements UniversalEntity{
 		this.icon_filePath = icon_filePath;
 	}
 
+	public int getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(int accessLevel) {
+		this.accessLevel = accessLevel;
+	}
+
 	@Override
 	public String toString() {
 		String str = "["+this.getClass().getName()+"] ";
@@ -207,6 +216,7 @@ public class User implements UniversalEntity{
 		eHashMap.put("idNum", idNum);
 		eHashMap.put("idType", String.valueOf(idType));
 		eHashMap.put("address", address);
+		eHashMap.put("accessLevel", String.valueOf(accessLevel));
 		
 		return eHashMap;
 	}

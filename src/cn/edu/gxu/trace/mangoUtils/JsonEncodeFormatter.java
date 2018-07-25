@@ -172,7 +172,7 @@ public final class JsonEncodeFormatter {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(0));
 		root.put("msg", "successful!");
-		root.put("timestamp", System.currentTimeMillis());
+		root.put("timestamp", System.currentTimeMillis()/1000);
 		return root.toString();
 	}
 	
@@ -187,7 +187,7 @@ public final class JsonEncodeFormatter {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(999));
 		root.put("msg", "Fail!");
-		root.put("timestamp", System.currentTimeMillis());
+		root.put("timestamp", System.currentTimeMillis()/1000);
 		return root.toString();
 	}
 	
@@ -202,7 +202,7 @@ public final class JsonEncodeFormatter {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(stateCode));
 		root.put("msg", msg);
-		root.put("timestamp", System.currentTimeMillis());
+		root.put("timestamp", System.currentTimeMillis()/1000);
 		return root.toString();
 	}
 }

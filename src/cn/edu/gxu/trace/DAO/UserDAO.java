@@ -1,5 +1,6 @@
 package cn.edu.gxu.trace.DAO;
 
+
 import cn.edu.gxu.trace.entity.User;
 
 public interface UserDAO {
@@ -48,6 +49,28 @@ public interface UserDAO {
 	 * @return
 	 */
 	public boolean updateUserProfile(User user,String token);
+	
+	/**
+	 * 获取用户的所有信息
+	 * @param key 关键字可以是后台uuid、token和电话号码
+	 * @return
+	 */
+	public User getBasicProfile(String key);
+	
+	/**
+	 * 用于更改用户登录时，请求的时间戳和随机串
+	 * @param timestamp 时间戳
+	 * @param salt 随机串
+	 * @return
+	 */
+	public boolean updateTimestampSalt(String timestamp,String salt,String tel);
+	
+	/**
+	 * 刷新指定用户的token
+	 * @param tel
+	 * @return
+	 */
+	public String refreshToken(String tel);
 	
 
 }
