@@ -94,6 +94,9 @@ public class UserServlet extends HttpServlet {
 				response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal parameters.Check Again."));
 			}
 		}
+		else {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(90009, "Token Invalid or expired."));
+		}
 		
 	}
 

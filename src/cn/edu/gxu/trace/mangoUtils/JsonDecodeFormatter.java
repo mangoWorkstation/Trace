@@ -54,7 +54,6 @@ public final class JsonDecodeFormatter {
 			Object v = root.get(k);
 			if (v instanceof JSONObject) {
 				JSONObject jsonObject = root.getJSONObject(k);
-				System.out.println(jsonObject.toString());
 				HashMap<String, String> objMap = new HashMap<>();
 				Iterator jsonObjectIterator = jsonObject.keys();
 				while(jsonObjectIterator.hasNext()) {
@@ -91,7 +90,6 @@ public final class JsonDecodeFormatter {
 			Object v = root.get(k);
 			if (v instanceof JSONArray) {
 				JSONArray jsonArray = root.getJSONArray(k);
-				System.out.println(jsonArray.toString());
 				ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
 				Iterator jsonArrayIterator = jsonArray.iterator();
 				while(jsonArrayIterator.hasNext()) {

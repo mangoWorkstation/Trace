@@ -72,5 +72,13 @@ public interface UserDAO {
 	 */
 	public String refreshToken(String tel);
 	
+	/**
+	 * 根据用户关键字，获取指定用户的权限级别
+	 * ROOT 超级管理员 COMMON 普通用户
+	 * @param key = uuid | token | tel
+	 * @return
+	 */
+	public User.type getAccessLevel(String key);
+	
 
 }

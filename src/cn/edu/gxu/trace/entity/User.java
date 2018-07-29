@@ -24,6 +24,12 @@ public class User implements UniversalEntity{
 	private String request_login_t;
 	private String salt;
 	
+	public enum type{
+		ROOT,
+		COMMON,
+		NONE //Represents illegal user only.
+	}
+	
 	public User() {
 		// TODO Auto-generated constructor stub
 	}

@@ -118,4 +118,23 @@ public class UserManager extends DAO<User> implements UserDAO {
 		}
 	}
 
+	@Override
+	public User.type getAccessLevel(String key) {
+		String sql = String.format("select * from USER where token = '%s' or uuid = '%s' or tel = '%s';", key,key,key);
+		User cUser = super.get(sql);
+		if(cUser!=null) {
+			switch (cUser.getAccessLevel()) {
+			case 0:
+				return User.type.ROOT;
+			case 1:
+				return User.type.COMMON;
+			default:
+				return User.type.NONE;
+			}
+		}
+		else {
+			return User.type.NONE;
+		}
+	}
+
 }
