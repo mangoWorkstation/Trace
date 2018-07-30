@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Fruit implements UniversalEntity {
 
 	private int uid;
+	private String name;
 	private String category;
 	private String onSale_t;
 	private String offSale_t;
@@ -24,6 +25,16 @@ public class Fruit implements UniversalEntity {
 
 	public void setUid(int uid) {
 		this.uid = uid;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
