@@ -1,7 +1,9 @@
 package cn.edu.gxu.trace.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,7 +65,17 @@ public class SensorServlet extends HttpServlet {
 				return;
 			}
 			case 10020:{
+				//传感器绑定、变更或解绑基地
 				toBindWithBase(params,response);
+				return;
+			}
+			case 10021:{
+				//获取传感器实时信息：按基地id查询或SIM卡号查询单个传感器
+				getSensorCurrentInfo(params,response);
+				return;
+			}
+			case 10022:{
+				toBindWithArchive(params,response);
 				return;
 			}
 			default:{
@@ -150,6 +162,81 @@ public class SensorServlet extends HttpServlet {
 			}
 		}
 		else {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(90009, "Token Invalid or expired."));
+			return;
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void getSensorCurrentInfo(HashMap<String, Object> params, HttpServletResponse response) throws IOException{
+		HashMap<String, String> data = (HashMap<String, String>)params.get("data");
+		String token = data.get("token");
+		UserManager userManager = new UserManager();
+		SensorManager sensorManager = new SensorManager();
+		
+		
+		//检查token，验证用户合法性
+		if(userManager.checkToken(token)) {
+			String base_id = data.get("base_id");
+			String sim = data.get("sim");
+			if(base_id!=null&& sim!=null) {
+				response.getWriter().write(JsonEncodeFormatter.universalResponse(90012, "Implicit Operation."));
+				return;
+			}
+			if(base_id!=null) {
+				ArrayList<Sensor> sensors = sensorManager.getSensorsByBase_id(base_id);
+				ArrayList<HashMap<String, String>> res_data = new ArrayList<>();
+				Iterator<Sensor> iterator = sensors.iterator();
+				while(iterator.hasNext()) {
+					Sensor tSensor = iterator.next();
+					res_data.add(tSensor.toHashMap());
+				}
+				//信息汇总
+				response.getWriter().write(JsonEncodeFormatter.parse(0, res_data));
+				return;
+			}
+			if(sim!=null) {
+				ArrayList<HashMap<String, String>> res_data = new ArrayList<>();
+				Sensor cSensor = sensorManager.getSensorProfileBySIM(sim);
+				if(cSensor!=null) {
+					res_data.add(cSensor.toHashMap());
+					response.getWriter().write(JsonEncodeFormatter.parse(0, res_data));
+					return;
+				}
+				else {
+					response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal Parameters."));
+					return;
+				}
+			}
+			
+		}else {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(90009, "Token Invalid or expired."));
+			return;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void toBindWithArchive(HashMap<String, Object> params, HttpServletResponse response) throws IOException {
+		HashMap<String, String> data = (HashMap<String, String>)params.get("data");
+		String token = data.get("token");
+		UserManager userManager = new UserManager();
+		SensorManager sensorManager = new SensorManager();
+		
+		
+		//检查token，验证用户合法性
+		if(userManager.checkToken(token)) {
+			String sim = data.get("sim");
+			String archive_id = data.get("archive_id");
+			if(sensorManager.bindArchive(sim, archive_id)) {
+				response.getWriter().write(JsonEncodeFormatter.universalResponse(0, "success."));
+				return;
+			}
+			else {
+				response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal parameters."));
+				return;
+			}
+		}else {
 			response.getWriter().write(JsonEncodeFormatter.universalResponse(90009, "Token Invalid or expired."));
 			return;
 		}

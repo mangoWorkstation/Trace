@@ -34,5 +34,13 @@ public interface SensorDAO {
 	 * @return
 	 */
 	public ArrayList<Sensor> getSensorsByBase_id(String base_id);
+	
+	/**
+	 * 传感器绑定种植
+	 * @param sim
+	 * @param archive_id
+	 * @return
+	 */
+	public boolean bindArchive(String sim,String archive_id);
 
 }

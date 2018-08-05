@@ -7,19 +7,23 @@ public class Sensor implements UniversalEntity {
 
 	private String sim;
 	private String base_id;
-//	private double batteryLevel;
-//	private int signaLevel;
 	private int state;
 	private String lastReport_t;
 	private String archive_id;
+	private double now_temp_air;
+	private double now_temp_soil;
+	private double now_humidity_soil;
+	private double now_humidity_air;
+	private double now_lux;
 	
 	
-//	public double getBatteryLevel() {
-//		return batteryLevel;
-//	}
-//	public int getSignaLevel() {
-//		return signaLevel;
-//	}
+
+	public String getSim() {
+		return sim;
+	}
+	public void setSim(String sim) {
+		this.sim = sim;
+	}
 	public int getState() {
 		return state;
 	}
@@ -27,12 +31,6 @@ public class Sensor implements UniversalEntity {
 		return lastReport_t;
 	}
 	
-//	public void setBatteryLevel(double batteryLevel) {
-//		this.batteryLevel = batteryLevel;
-//	}
-//	public void setSignaLevel(int signaLevel) {
-//		this.signaLevel = signaLevel;
-//	}
 	public void setState(int state) {
 		this.state = state;
 	}
@@ -56,6 +54,36 @@ public class Sensor implements UniversalEntity {
 		this.archive_id = archive_id;
 	}
 
+	public double getNow_temp_air() {
+		return now_temp_air;
+	}
+	public double getNow_temp_soil() {
+		return now_temp_soil;
+	}
+	public double getNow_humidity_soil() {
+		return now_humidity_soil;
+	}
+	public double getNow_humidity_air() {
+		return now_humidity_air;
+	}
+	public double getNow_lux() {
+		return now_lux;
+	}
+	public void setNow_temp_air(double now_temp_air) {
+		this.now_temp_air = now_temp_air;
+	}
+	public void setNow_temp_soil(double now_temp_soil) {
+		this.now_temp_soil = now_temp_soil;
+	}
+	public void setNow_humidity_soil(double now_humidity_soil) {
+		this.now_humidity_soil = now_humidity_soil;
+	}
+	public void setNow_humidity_air(double now_humidity_air) {
+		this.now_humidity_air = now_humidity_air;
+	}
+	public void setNow_lux(double now_lux) {
+		this.now_lux = now_lux;
+	}
 	public Sensor() {
 		// TODO Auto-generated constructor stub
 	}
@@ -88,12 +116,7 @@ public class Sensor implements UniversalEntity {
 		}
 		return eHashMap;
 	}
-	public String getSim() {
-		return sim;
-	}
-	public void setSim(String sim) {
-		this.sim = sim;
-	}
+	
 	
 
 }
