@@ -69,6 +69,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			case 10007:{
 				token_login(params, response);
+				return;
 			}
 			default:{
 				response.getWriter().write(JsonEncodeFormatter.universalResponse(90001, "Invalid Request Code."));
@@ -158,6 +159,8 @@ public class LoginServlet extends HttpServlet {
 			User cUser = userManager.getBasicProfile(token);
 			HashMap<String, String> res_data = new HashMap<>();
 			res_data.put("uuid", cUser.getUuid());
+			response.getWriter().write(JsonEncodeFormatter.parse(0, res_data));
+			return;
 		}
 		else {
 			response.getWriter().write(JsonEncodeFormatter.universalResponse(90009, "Token Invalid or expired."));

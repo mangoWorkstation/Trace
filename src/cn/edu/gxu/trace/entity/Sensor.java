@@ -5,25 +5,21 @@ import java.util.HashMap;
 
 public class Sensor implements UniversalEntity {
 
-	private String serial;
+	private String sim;
 	private String base_id;
-	private double batteryLevel;
-	private int signaLevel;
+//	private double batteryLevel;
+//	private int signaLevel;
 	private int state;
 	private String lastReport_t;
 	private String archive_id;
 	
 	
-	public String getSerial() {
-		return serial;
-	}
-	
-	public double getBatteryLevel() {
-		return batteryLevel;
-	}
-	public int getSignaLevel() {
-		return signaLevel;
-	}
+//	public double getBatteryLevel() {
+//		return batteryLevel;
+//	}
+//	public int getSignaLevel() {
+//		return signaLevel;
+//	}
 	public int getState() {
 		return state;
 	}
@@ -31,16 +27,12 @@ public class Sensor implements UniversalEntity {
 		return lastReport_t;
 	}
 	
-	public void setSerial(String serial) {
-		this.serial = serial;
-	}
-	
-	public void setBatteryLevel(double batteryLevel) {
-		this.batteryLevel = batteryLevel;
-	}
-	public void setSignaLevel(int signaLevel) {
-		this.signaLevel = signaLevel;
-	}
+//	public void setBatteryLevel(double batteryLevel) {
+//		this.batteryLevel = batteryLevel;
+//	}
+//	public void setSignaLevel(int signaLevel) {
+//		this.signaLevel = signaLevel;
+//	}
 	public void setState(int state) {
 		this.state = state;
 	}
@@ -95,6 +87,12 @@ public class Sensor implements UniversalEntity {
 			}
 		}
 		return eHashMap;
+	}
+	public String getSim() {
+		return sim;
+	}
+	public void setSim(String sim) {
+		this.sim = sim;
 	}
 	
 

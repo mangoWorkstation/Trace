@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Record implements UniversalEntity {
 	
 	private String uid;
-	private String sensorSerial;
+	private String sensorSIM;
 	private String archive_id;
 	private String timestamp;
 	private double temp_air;
@@ -14,8 +14,8 @@ public class Record implements UniversalEntity {
 	private double humidity_air;
 	private double humidity_soil;
 	private double lux;
-	private double batteryLevel;
-	private int signalLevel;
+//	private double batteryLevel;
+//	private int signalLevel;
 	
 	public Record() {
 		// TODO Auto-generated constructor stub
@@ -24,9 +24,6 @@ public class Record implements UniversalEntity {
 		return uid;
 	}
 
-	public String getSensorSerial() {
-		return sensorSerial;
-	}
 
 	public String getArchive_id() {
 		return archive_id;
@@ -56,21 +53,18 @@ public class Record implements UniversalEntity {
 		return lux;
 	}
 
-	public double getBatteryLevel() {
-		return batteryLevel;
-	}
-
-	public int getSignalLevel() {
-		return signalLevel;
-	}
+//	public double getBatteryLevel() {
+//		return batteryLevel;
+//	}
+//
+//	public int getSignalLevel() {
+//		return signalLevel;
+//	}
 
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
 
-	public void setSensorSerial(String sensorSerial) {
-		this.sensorSerial = sensorSerial;
-	}
 
 	public void setArchive_id(String archive_id) {
 		this.archive_id = archive_id;
@@ -100,13 +94,13 @@ public class Record implements UniversalEntity {
 		this.lux = lux;
 	}
 
-	public void setBatteryLevel(double batteryLevel) {
-		this.batteryLevel = batteryLevel;
-	}
-
-	public void setSignalLevel(int signalLevel) {
-		this.signalLevel = signalLevel;
-	}
+//	public void setBatteryLevel(double batteryLevel) {
+//		this.batteryLevel = batteryLevel;
+//	}
+//
+//	public void setSignalLevel(int signalLevel) {
+//		this.signalLevel = signalLevel;
+//	}
 
 	@Override
 	public String toString() {
@@ -134,6 +128,12 @@ public class Record implements UniversalEntity {
 			}
 		}
 		return eHashMap;
+	}
+	public String getSensorSIM() {
+		return sensorSIM;
+	}
+	public void setSensorSIM(String sensorSIM) {
+		this.sensorSIM = sensorSIM;
 	}
 
 }
