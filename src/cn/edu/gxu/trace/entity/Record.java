@@ -8,7 +8,7 @@ public class Record implements UniversalEntity {
 	private String uid;
 	private String sensorSIM;
 	private String archive_id;
-	private String timestamp;
+	private String timestamps;
 	private double temp_air;
 	private double temp_soil;
 	private double humidity_air;
@@ -29,8 +29,8 @@ public class Record implements UniversalEntity {
 		return archive_id;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public String getTimestamps() {
+		return timestamps;
 	}
 
 	public double getTemp_air() {
@@ -70,8 +70,8 @@ public class Record implements UniversalEntity {
 		this.archive_id = archive_id;
 	}
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setTimestamps(String timestamps) {
+		this.timestamps = timestamps;
 	}
 
 	public void setTemp_air(double temp_air) {

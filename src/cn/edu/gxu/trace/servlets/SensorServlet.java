@@ -75,6 +75,7 @@ public class SensorServlet extends HttpServlet {
 				return;
 			}
 			case 10022:{
+				//将传感器绑定到指定水果批次
 				toBindWithArchive(params,response);
 				return;
 			}
@@ -100,7 +101,7 @@ public class SensorServlet extends HttpServlet {
 				Record cRecord = new Record();
 				cRecord.setSensorSIM(sim);
 				cRecord.setArchive_id(cSensor.getArchive_id());
-				cRecord.setTimestamp(data.get("timestamp_created"));
+				cRecord.setTimestamps(data.get("timestamp_created"));
 				cRecord.setTemp_air(Double.valueOf(data.get("at")));
 				cRecord.setTemp_soil(Double.valueOf(data.get("st")));
 				cRecord.setHumidity_air(Double.valueOf(data.get("ah")));
@@ -116,7 +117,6 @@ public class SensorServlet extends HttpServlet {
 				}
 			}
 		}
-		//否则注册该新传感器，未测试该分支
 		else {
 			sensorManager.addNewSensor(sim);
 			response.getWriter().write(JsonEncodeFormatter.universalResponse(0, "Register ok."));

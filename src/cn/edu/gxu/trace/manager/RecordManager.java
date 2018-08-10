@@ -1,6 +1,5 @@
 package cn.edu.gxu.trace.manager;
 
-import java.util.UUID;
 
 import cn.edu.gxu.trace.DAO.DAO;
 import cn.edu.gxu.trace.DAO.RecordDAO;
@@ -10,13 +9,11 @@ public class RecordManager extends DAO<Record> implements RecordDAO {
 
 	@Override
 	public boolean addNewRecord(Record record) {
-		String uid = UUID.randomUUID().toString();
-		String sql = String.format("insert into RECORD values('%s','%s','%s','%s',"
+		String sql = String.format("insert into RECORD values(default,'%s','%s','%s',"
 				+ "%f,%f,%f,%f,%f);",
-				uid,
 				record.getSensorSIM(),
 				record.getArchive_id(),
-				record.getTimestamp(),
+				record.getTimestamps(),
 				record.getTemp_air(),
 				record.getTemp_soil(),
 				record.getHumidity_air(),

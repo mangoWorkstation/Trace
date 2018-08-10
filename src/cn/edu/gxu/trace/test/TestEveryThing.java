@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.edu.gxu.trace.db.MutiTableResolver;
+import cn.edu.gxu.trace.db.SqlManager;
 import cn.edu.gxu.trace.mangoUtils.Encryptor;
 import cn.edu.gxu.trace.mangoUtils.JsonEncodeFormatter;
 
@@ -42,7 +44,12 @@ public class TestEveryThing {
 //		logger.debug(appKey);
 //		logger.debug(result);
 		
-		logger.debug(Integer.valueOf("好"));
+//		logger.debug(Integer.valueOf("好"));
+//		
+//		SqlManager sqlManager = SqlManager.getInstance();
+//		String sql = "select * from USER where idNum='45260919880706334X';";
+//		ArrayList<HashMap<String, String>> eArrayList = MutiTableResolver.query(sql);
+//		logger.debug(eArrayList.toString());
 	}
 
 }
