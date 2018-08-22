@@ -1,6 +1,8 @@
 package cn.edu.gxu.trace.servlets;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import cn.edu.gxu.trace.db.MutiTableResolver;
-import cn.edu.gxu.trace.manager.SensorManager;
+import cn.edu.gxu.trace.manager.UniversalManager;
 import cn.edu.gxu.trace.manager.UserManager;
 import cn.edu.gxu.trace.mangoUtils.JsonDecodeFormatter;
 import cn.edu.gxu.trace.mangoUtils.JsonEncodeFormatter;
@@ -63,11 +65,45 @@ public class RecordServlet extends HttpServlet {
 				getRecordBySensorSIM(params,response);
 				return;
 			}
+			case 10024:{
+				getArchiveForConsumer(params,response);
+				return;
+			}
 			default:{
 				response.getWriter().write(JsonEncodeFormatter.universalResponse(90001, "Invalid Request Code."));
 				return;	
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getArchiveForConsumer(HashMap<String, Object> params, HttpServletResponse response) throws IOException {
+		HashMap<String, String> data = (HashMap<String, String>)params.get("data");
+		String archive_id = data.get("archive_id");
+		
+		HashMap<String, String> briefSummary_map = UniversalManager.getArchiveSummary_info(archive_id);
+		
+		if(briefSummary_map!=null) {
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String from_t=null;
+			String to_t=null;
+			//如果种植周期为结束，则使用当前时间作为结束时间
+			try {
+				from_t = String.valueOf(simpleDateFormat.parse(briefSummary_map.get("archive_plant_t")).getTime()/1000);
+				to_t = String.valueOf(simpleDateFormat.parse(briefSummary_map.get("archive_plant_end_t")).getTime()/1000);
+			} catch (ParseException | NullPointerException e) {
+				to_t = String.valueOf(System.currentTimeMillis()/1000);
+			}
+			
+			ArrayList<HashMap<String, String>> ecd_data = UniversalManager.getArchiveSummary_data(archive_id, from_t, to_t);
+			response.getWriter().write(JsonEncodeFormatter.parse(0, briefSummary_map,ecd_data));
+			return;
+		}
+		else {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal Parameter."));
+			return;
+		}
+		
 	}
 
 	@SuppressWarnings("unchecked")

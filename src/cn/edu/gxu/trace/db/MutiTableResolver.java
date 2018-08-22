@@ -2,6 +2,7 @@ package cn.edu.gxu.trace.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.mysql.jdbc.ResultSetMetaData;
@@ -21,7 +22,6 @@ public class MutiTableResolver {
 	 * @return
 	 */
 	public static HashMap<String, String> query4row(String sql){
-//		ArrayList<HashMap<String, String>> e = new ArrayList<>();
 		HashMap<String, String> el = new HashMap<>();
 		try {
 			ResultSet resultSet = sqlManager.executeSqlQuery(sql);
@@ -39,5 +39,31 @@ public class MutiTableResolver {
 			e1.printStackTrace();
 		}
 		return el;
+	}
+	
+	/**
+	 * 将返回一组联表查询的数据
+	 * @param sql
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, String>> query4List(String sql){
+		ArrayList<HashMap<String, String>> e = new ArrayList<>();
+		try {
+			ResultSet resultSet = sqlManager.executeSqlQuery(sql);
+			while(resultSet.next()) {
+				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
+				int columnCount = rsmd.getColumnCount();
+				//此处下标必须从1开始
+				HashMap<String, String> el = new HashMap<>();
+				for(int index = 1;index<columnCount+1;index++) {
+					el.put(rsmd.getColumnName(index), resultSet.getString(index));
+				}
+				e.add(el);
+			}
+			resultSet.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return e;
 	}
 }
