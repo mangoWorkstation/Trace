@@ -10,6 +10,9 @@ public class Archive implements UniversalEntity{
 	private String plant_t;
 	private String plant_end_t;
 	private String base_id;
+	private float score;
+	private float score_count;
+	private float rate;
 	
 	public Archive() {	
 	}
@@ -52,6 +55,30 @@ public class Archive implements UniversalEntity{
 
 	public void setBase_id(String base_id) {
 		this.base_id = base_id;
+	}
+
+	public float getScore() {
+		return score;
+	}
+
+	public float getScore_count() {
+		return score_count;
+	}
+
+	public float getRate() {
+		return rate;
+	}
+
+	public void setScore(float score) {
+		this.score = score;
+	}
+
+	public void setScore_count(float score_count) {
+		this.score_count = score_count;
+	}
+
+	public void setRate(float rate) {
+		this.rate = rate;
 	}
 
 	@Override

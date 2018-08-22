@@ -29,7 +29,6 @@ import cn.edu.gxu.trace.mangoUtils.JsonDecodeFormatter.dataType;
 public class RecordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger log = Logger.getLogger(RecordServlet.class);
-
        
     /**
      * @see HttpServlet#HttpServlet()

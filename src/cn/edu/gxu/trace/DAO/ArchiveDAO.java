@@ -34,5 +34,13 @@ public interface ArchiveDAO {
 	 */
 	public Archive getArchiveByUid(String uid);
 	
+	/**
+	 * 更新种植档案的用户评分
+	 * @param uid 批次编号
+	 * @param rate 评分
+	 * @return
+	 */
+	public boolean updateRate(String uid,float rate);
+	
 
 }

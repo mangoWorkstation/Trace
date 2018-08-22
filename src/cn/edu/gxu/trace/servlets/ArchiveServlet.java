@@ -67,8 +67,13 @@ public class ArchiveServlet extends HttpServlet {
 				toFinishArchive(params,response);
 				return;
 			}
+			//获取指定基地的所有种植档案
 			case 10018:{
 				toGetArchiveProfiles(params,response);
+				return;
+			}
+			case 10025:{
+				toUpdateRate(params,response);
 				return;
 			}
 			default:{
@@ -186,6 +191,24 @@ public class ArchiveServlet extends HttpServlet {
 			return;
 		}
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void toUpdateRate(HashMap<String, Object> params, HttpServletResponse response) throws IOException{
+		HashMap<String, String> data = (HashMap<String, String>)params.get("data");
+		String archive_id = data.get("archive_id");
+		String rate = data.get("rate");
+				
+		ArchiveManager archiveManager = new ArchiveManager();
+		
+		if(archiveManager.updateRate(archive_id, Float.valueOf(rate))) {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(0, "success."));
+			return;
+		}
+		else {
+			response.getWriter().write(JsonEncodeFormatter.universalResponse(90006, "Illegal Parameter."));
+			return;
+		}
 	}
 
 }

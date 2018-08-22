@@ -12,7 +12,7 @@ public class ArchiveManager extends DAO<Archive> implements ArchiveDAO {
 	@Override
 	public boolean addNewArchive(Archive archive) {
 		String uid = UUID.randomUUID().toString();
-		String sql = String.format("insert into ARCHIVE values('%s','%d','%s',null,'%s');", 
+		String sql = String.format("insert into ARCHIVE values('%s','%d','%s',null,'%s',0,1,default);", 
 				uid,
 				archive.getFruit_id(),
 				archive.getPlant_t(),
@@ -55,6 +55,18 @@ public class ArchiveManager extends DAO<Archive> implements ArchiveDAO {
 	public Archive getArchiveByUid(String uid) {
 		String sql = String.format("select * from ARCHIVE where uid = '%s';", uid);
 		return super.get(sql);
+	}
+
+	@Override
+	public boolean updateRate(String uid, float rate) {
+		String sql = String.format("update ARCHIVE set score = score + %f,score_count = score_count + 1 where uid = '%s';", rate,uid);
+		try {
+			super.update(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 }
