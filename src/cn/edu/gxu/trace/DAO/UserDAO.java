@@ -1,6 +1,8 @@
 package cn.edu.gxu.trace.DAO;
 
 
+import java.util.ArrayList;
+
 import cn.edu.gxu.trace.entity.User;
 
 public interface UserDAO {
@@ -58,6 +60,13 @@ public interface UserDAO {
 	public User getBasicProfile(String key);
 	
 	/**
+	 * 根据用户名称查询用户基础信息，支持模糊查询
+	 * @param name
+	 * @return
+	 */
+	public ArrayList<User> getBasicProfileByName(String name);
+	
+	/**
 	 * 用于更改用户登录时，请求的时间戳和随机串
 	 * @param timestamp 时间戳
 	 * @param salt 随机串
@@ -79,6 +88,31 @@ public interface UserDAO {
 	 * @return
 	 */
 	public User.type getAccessLevel(String key);
+	
+	
+	/**
+	 * 更新用户短信验证码
+	 * @param authcode
+	 * @param token
+	 * @return
+	 */
+	public boolean refreshAuthCode(String authcode,String token);
+	
+	/**
+	 * 更新用户电话号码
+	 * @param tel
+	 * @param uuid
+	 * @return
+	 */
+	public boolean updateTel(String tel,String uuid);
+	
+	/**
+	 * 重置密码
+	 * @param newSHApwd
+	 * @param uuid
+	 * @return
+	 */
+	public boolean resetPwd(String newSHApwd,String uuid);
 	
 
 }

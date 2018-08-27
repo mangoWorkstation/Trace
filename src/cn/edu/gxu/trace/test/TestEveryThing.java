@@ -36,12 +36,12 @@ public class TestEveryThing {
 //		String timestamp = "1532487333";
 //		String str = "q7b5jo7joq";
 //		
-//		String source = "common_gxu";
-//		String appKey = new Encryptor().SHA512(source);
-//		
+		String source = "common_gxu";
+		String appKey = new Encryptor().SHA512(source);
+		
 //		String result = new Encryptor().SHA512(appKey+timestamp+str);
-//		
-//		logger.debug(appKey);
+		
+		logger.debug(appKey);
 //		logger.debug(result);
 		
 //		logger.debug(Integer.valueOf("好"));

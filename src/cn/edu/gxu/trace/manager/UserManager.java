@@ -1,5 +1,6 @@
 package cn.edu.gxu.trace.manager;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import cn.edu.gxu.trace.DAO.DAO;
@@ -134,6 +135,57 @@ public class UserManager extends DAO<User> implements UserDAO {
 		}
 		else {
 			return User.type.NONE;
+		}
+	}
+
+	@Override
+	public ArrayList<User> getBasicProfileByName(String name) {
+		String sql = "select * from USER where name like '%"+name+"%';";
+		return (ArrayList<User>) super.getForList(sql);
+	}
+
+	@Override
+	public boolean refreshAuthCode(String authcode, String token) {
+		try {
+			String sql;
+			if(authcode!=null) {
+				String authCode_expire_t = String.valueOf(System.currentTimeMillis()/1000 + 60);
+				sql = String.format("update USER set authcode = '%s',authCode_expire_t = '%s' where token = '%s';",
+						authcode,authCode_expire_t,token);
+			}
+			else {
+				sql = String.format("update USER set authcode = NULL,authCode_expire_t = NULL where token = '%s';",
+						token);
+			}
+			super.update(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updateTel(String tel, String uuid) {
+		try {
+			String sql = String.format("update USER set tel = '%s' where uuid = '%s';",tel,uuid);
+			super.update(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean resetPwd(String newSHApwd, String uuid) {
+		try {
+			String sql = String.format("update USER set appKey = '%s' where uuid = '%s';",newSHApwd,uuid);
+			super.update(sql);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 

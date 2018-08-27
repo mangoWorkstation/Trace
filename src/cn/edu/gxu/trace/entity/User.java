@@ -213,7 +213,6 @@ public class User implements UniversalEntity{
 	public HashMap<String, String> toSecureHashMap(){
 		HashMap<String, String> eHashMap = new HashMap<>();
 		
-		eHashMap.put("uuid", uuid);
 		eHashMap.put("name", name);
 		eHashMap.put("tel",tel);
 		eHashMap.put("province", province);
