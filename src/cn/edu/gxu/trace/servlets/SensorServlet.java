@@ -13,11 +13,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import cn.edu.gxu.trace.entity.Base;
+import cn.edu.gxu.trace.entity.MsgBox;
 import cn.edu.gxu.trace.entity.Record;
 import cn.edu.gxu.trace.entity.Sensor;
+import cn.edu.gxu.trace.entity.User;
+import cn.edu.gxu.trace.entity.MsgBox.MSG_TYPE;
+import cn.edu.gxu.trace.manager.BaseManager;
+import cn.edu.gxu.trace.manager.MsgBoxManager;
 import cn.edu.gxu.trace.manager.RecordManager;
 import cn.edu.gxu.trace.manager.SensorManager;
 import cn.edu.gxu.trace.manager.UserManager;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate.ALERT_TYPE;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate.TEMPLATE_TYPE;
 import cn.edu.gxu.trace.mangoUtils.JsonDecodeFormatter;
 import cn.edu.gxu.trace.mangoUtils.JsonEncodeFormatter;
 import cn.edu.gxu.trace.mangoUtils.POST2String;
@@ -107,6 +116,99 @@ public class SensorServlet extends HttpServlet {
 				cRecord.setHumidity_air(Double.valueOf(data.get("ah")));
 				cRecord.setHumidity_soil(Double.valueOf(data.get("sh")));
 				cRecord.setLux(Double.valueOf(data.get("lux")));
+				
+				
+				
+				//TODO 此处将对数据进行甄别 暂行一下预警规则，若超过预设定的阈值，将会将报警信息写入消息箱
+				//TODO 后期处理：将接入管家云进行预警
+				
+				String title = null;
+				String msg = null;
+				String receiver_id = null;
+				String baseName = null;
+				String timestamps_created = String.valueOf(System.currentTimeMillis()/1000);
+				
+				//获取基础信息，写入消息箱
+				BaseManager baseManager = new BaseManager();
+				Base cBase = baseManager.getBaseProfileByBase_id(cSensor.getBase_id());
+				if(cBase!=null) {
+					baseName = cBase.getName();
+					UserManager userManager = new UserManager();
+					User cUser = userManager.getBasicProfile(cBase.getOwner_id());
+					if(cUser!=null) {
+						receiver_id = cUser.getUuid();
+					}
+				}
+				
+				MsgBoxManager msgBoxManager = new MsgBoxManager();
+				
+				try {
+					//空气温度发生异常
+					if(cRecord.getTemp_air()>37 || cRecord.getTemp_air()<10) {
+						title = AlertTextTemplate.getString(ALERT_TYPE.TEMP_AIR, TEMPLATE_TYPE.TITLE, cRecord.getTemp_air(), baseName, sim);
+						msg = AlertTextTemplate.getString(ALERT_TYPE.TEMP_AIR, TEMPLATE_TYPE.MSG, cRecord.getTemp_air(), baseName, sim);
+						MsgBox msgBox = new MsgBox();
+						msgBox.setReceiver_id(receiver_id);
+						msgBox.setTimestamps_created(timestamps_created);
+						msgBox.setMsg(msg);
+						msgBox.setTitle(title);
+						msgBoxManager.insertNewMsg(msgBox, MSG_TYPE.ALERT);
+					}
+					
+					//土壤温度发生异常
+					if(cRecord.getTemp_soil()>50 || cRecord.getTemp_soil()<5) {
+						title = AlertTextTemplate.getString(ALERT_TYPE.TEMP_SOIL, TEMPLATE_TYPE.TITLE, cRecord.getTemp_soil(), baseName, sim);
+						msg = AlertTextTemplate.getString(ALERT_TYPE.TEMP_SOIL, TEMPLATE_TYPE.MSG, cRecord.getTemp_soil(), baseName, sim);
+						MsgBox msgBox = new MsgBox();
+						msgBox.setReceiver_id(receiver_id);
+						msgBox.setTimestamps_created(timestamps_created);
+						msgBox.setMsg(msg);
+						msgBox.setTitle(title);
+						msgBoxManager.insertNewMsg(msgBox, MSG_TYPE.ALERT);
+					}
+					
+					//空气湿度发生异常
+					if(cRecord.getHumidity_air()>90 || cRecord.getHumidity_air()<5) {
+						title = AlertTextTemplate.getString(ALERT_TYPE.HUMIDITY_AIR, TEMPLATE_TYPE.TITLE, cRecord.getHumidity_air(), baseName, sim);
+						msg = AlertTextTemplate.getString(ALERT_TYPE.HUMIDITY_AIR, TEMPLATE_TYPE.MSG, cRecord.getHumidity_air(), baseName, sim);
+						MsgBox msgBox = new MsgBox();
+						msgBox.setReceiver_id(receiver_id);
+						msgBox.setTimestamps_created(timestamps_created);
+						msgBox.setMsg(msg);
+						msgBox.setTitle(title);
+						msgBoxManager.insertNewMsg(msgBox, MSG_TYPE.ALERT);
+					}
+					
+					//土壤湿度发生异常
+					if(cRecord.getHumidity_soil()>80 || cRecord.getHumidity_soil()<5) {
+						title = AlertTextTemplate.getString(ALERT_TYPE.HUMIDITY_SOIL, TEMPLATE_TYPE.TITLE, cRecord.getHumidity_soil(), baseName, sim);
+						msg = AlertTextTemplate.getString(ALERT_TYPE.HUMIDITY_SOIL, TEMPLATE_TYPE.MSG, cRecord.getHumidity_soil(), baseName, sim);
+						MsgBox msgBox = new MsgBox();
+						msgBox.setReceiver_id(receiver_id);
+						msgBox.setTimestamps_created(timestamps_created);
+						msgBox.setMsg(msg);
+						msgBox.setTitle(title);
+						msgBoxManager.insertNewMsg(msgBox, MSG_TYPE.ALERT);
+					}
+					
+					//光照强度发生异常
+					if(cRecord.getLux()>10000 || cRecord.getLux()<100) {
+						title = AlertTextTemplate.getString(ALERT_TYPE.LUX, TEMPLATE_TYPE.TITLE, cRecord.getLux(), baseName, sim);
+						msg = AlertTextTemplate.getString(ALERT_TYPE.LUX, TEMPLATE_TYPE.MSG, cRecord.getLux(), baseName, sim);
+						MsgBox msgBox = new MsgBox();
+						msgBox.setReceiver_id(receiver_id);
+						msgBox.setTimestamps_created(timestamps_created);
+						msgBox.setMsg(msg);
+						msgBox.setTitle(title);
+						msgBoxManager.insertNewMsg(msgBox, MSG_TYPE.ALERT);
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+				
+//				log.debug(title);
+//				log.debug(msg);
+				
 				if(recordManager.addNewRecord(cRecord)) {
 					response.getWriter().write(JsonEncodeFormatter.universalResponse(0, "ok"));
 					return;

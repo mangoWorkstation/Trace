@@ -19,6 +19,7 @@ public final class JsonEncodeFormatter {
 	 */
 	@SuppressWarnings("unchecked")
 	public static String parse(int stateCode,Object...data) {
+		String invalidStr = "{invalid params}";
 		
 		try {
 			switch (data.length) {
@@ -30,7 +31,7 @@ public final class JsonEncodeFormatter {
 						return parser(stateCode, (ArrayList<HashMap<String, String>>) data[0]);
 					}
 					else {
-						return "{invalid params}";
+						return invalidStr;
 					}
 				}
 				case 2:{
@@ -41,16 +42,15 @@ public final class JsonEncodeFormatter {
 						return parser(stateCode, (HashMap<String, String>)data[0],(ArrayList<HashMap<String, String>>)data[1]);
 					}
 					else {
-						return "{invalid params}";
+						return invalidStr;
 					}
 				}
 				case 0:
 				default:{
-					return "{invalid params}";
+					return invalidStr;
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return "{invalid params}";
 		}
@@ -171,8 +171,8 @@ public final class JsonEncodeFormatter {
 	public static String defaultSuccessfulResponse() {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(0));
-		root.put("msg", "successful!");
-		root.put("timestamp", System.currentTimeMillis()/1000);
+		root.put("msg", "success.");
+		root.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
 		return root.toString();
 	}
 	
@@ -187,7 +187,7 @@ public final class JsonEncodeFormatter {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(999));
 		root.put("msg", "Fail!");
-		root.put("timestamp", System.currentTimeMillis()/1000);
+		root.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
 		return root.toString();
 	}
 	
@@ -202,7 +202,7 @@ public final class JsonEncodeFormatter {
 		JSONObject root = new JSONObject();
 		root.put("code", String.valueOf(stateCode));
 		root.put("msg", msg);
-		root.put("timestamp", System.currentTimeMillis()/1000);
+		root.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
 		return root.toString();
 	}
 }

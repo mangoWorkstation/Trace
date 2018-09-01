@@ -4,15 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import cn.edu.gxu.trace.db.MutiTableResolver;
 import cn.edu.gxu.trace.entity.Archive;
 import cn.edu.gxu.trace.entity.Base;
 import cn.edu.gxu.trace.entity.Fruit;
 import cn.edu.gxu.trace.entity.User;
-import cn.edu.gxu.trace.servlets.RecordServlet;
 
 /**
  * 用于处理多表联查的汇总数据
@@ -20,7 +20,7 @@ import cn.edu.gxu.trace.servlets.RecordServlet;
  * @since 2018-08-10
  */
 public class UniversalManager {
-	private static Logger log = Logger.getLogger(UniversalManager.class);
+//	private static Logger log = Logger.getLogger(UniversalManager.class);
 
 	/**
 	 * 将提供与水果种植档案所关联的信息汇总
@@ -76,6 +76,13 @@ public class UniversalManager {
 		
 	}
 	
+	/**
+	 * 获取指定水果种植档案的环境数据汇总
+	 * @param archive_id 种植档案id
+	 * @param from_t 起始时间戳
+	 * @param to_t  结束时间戳
+	 * @return
+	 */
 	public static ArrayList<HashMap<String, String>> getArchiveSummary_data(String archive_id,String from_t,String to_t){
 		ArrayList<HashMap<String, String>> e = new ArrayList<>();
 		
@@ -92,4 +99,155 @@ public class UniversalManager {
 		
 		return e;
 	}
+	
+	/**
+	 * 获取指定用户接收的警报信息和系统通知
+	 * @param startIndex 起始分页码
+	 * @param limit	每页显示数量
+	 * @param isRead 是否已读
+	 * @param receiver_id 用户uuid
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, String>> getMsg4CurrentUser(int startIndex,int limit,int isRead,String receiver_id){
+		ArrayList<HashMap<String, String>> raw = new ArrayList<>();
+		
+		//检查起始页码
+		if(startIndex<=0||limit<=0) {
+			return null;
+		}
+		
+		//计算起始页码
+		startIndex = (startIndex-1)*limit;
+		
+		try {
+			String sql = String.format("select * from MSGBOX left join USER on MSGBOX.sender_id = USER.uuid "
+					+ "where (receiver_id = '%s' or receiver_id = 'all') and isResolved is NULL and isRead = %d order by timestamps_created desc "
+					+ "limit %d,%d;", receiver_id,isRead,startIndex,limit);
+			raw = MutiTableResolver.query4List(sql);
+			
+			//数据过滤
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ArrayList<HashMap<String, String>> raw_filtered = new ArrayList<>();
+			Iterator<HashMap<String, String>> rawIterator = raw.iterator();
+			while(rawIterator.hasNext()) {
+				HashMap<String, String> el = new HashMap<>();
+				HashMap<String, String> raw_el = rawIterator.next();
+				el.put("uid", raw_el.get("uid"));
+				el.put("sender_name", raw_el.get("name"));
+				el.put("title", raw_el.get("title"));
+				el.put("msg", raw_el.get("msg"));
+				el.put("isRead", raw_el.get("isRead"));
+				el.put("timestamps_created", simpleDateFormat.format(new Date(Long.parseLong(raw_el.get("timestamps_created"))*1000)));
+				raw_filtered.add(el);
+			}
+			return raw_filtered;
+			
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			return null;
+		}
+		
+		
+	}
+	
+	/**
+	 * 普通溯源用户获取已经发起的客服信息列表及详情
+	 * @param startIndex 起始分页码
+	 * @param limit 每页显示条数
+	 * @param isResolved 是否被系统管理员处理
+	 * @param uuid 用户uuid
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, String>> getCustomerServiceMsg4CommonUser(int startIndex,int limit,int isResolved,String uuid){
+		ArrayList<HashMap<String, String>> raw = new ArrayList<>();
+		
+		//检查起始页码
+		if(startIndex<=0||limit<=0) {
+			return null;
+		}
+		
+		//计算起始页码
+		startIndex = (startIndex-1)*limit;
+		
+		try {
+			String sql = String.format("select * from MSGBOX left join USER on MSGBOX.sender_id = USER.uuid "
+					+ "where sender_id = '%s' and isRead is NULL and isResolved = %d order by timestamps_created desc "
+					+ "limit %d,%d;", uuid,isResolved,startIndex,limit);
+			raw = MutiTableResolver.query4List(sql);
+			
+			//数据过滤
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ArrayList<HashMap<String, String>> raw_filtered = new ArrayList<>();
+			Iterator<HashMap<String, String>> rawIterator = raw.iterator();
+			while(rawIterator.hasNext()) {
+				HashMap<String, String> el = new HashMap<>();
+				HashMap<String, String> raw_el = rawIterator.next();
+				el.put("uid", raw_el.get("uid"));
+				el.put("title", raw_el.get("title"));
+				el.put("msg", raw_el.get("msg"));
+				el.put("isResolved", raw_el.get("isResolved"));
+				el.put("timestamps_created", simpleDateFormat.format(new Date(Long.parseLong(raw_el.get("timestamps_created"))*1000)));
+				raw_filtered.add(el);
+			}
+			return raw_filtered;
+			
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			return null;
+		}
+		
+		
+	}
+	
+	/**
+	 * 系统管理员获取接收到的客服信息列表及详情
+	 * @param startIndex 起始分页码
+	 * @param limit 每页显示条数
+	 * @param isResolved 是否被系统管理员处理
+	 * @param uuid 用户uuid
+	 * @return
+	 */
+	public static ArrayList<HashMap<String, String>> getCustomerServiceMsg4Root(int startIndex,int limit,int isResolved){
+		ArrayList<HashMap<String, String>> raw = new ArrayList<>();
+		
+		//检查起始页码
+		if(startIndex<=0||limit<=0) {
+			return null;
+		}
+		
+		//计算起始页码
+		startIndex = (startIndex-1)*limit;
+		
+		try {
+			String sql = String.format("select * from MSGBOX left join USER on MSGBOX.sender_id = USER.uuid "
+					+ "where receiver_id = 'root' and isRead is NULL and isResolved = %d order by timestamps_created desc "
+					+ "limit %d,%d;", isResolved,startIndex,limit);
+			raw = MutiTableResolver.query4List(sql);
+			
+			//数据过滤
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ArrayList<HashMap<String, String>> raw_filtered = new ArrayList<>();
+			Iterator<HashMap<String, String>> rawIterator = raw.iterator();
+			while(rawIterator.hasNext()) {
+				HashMap<String, String> el = new HashMap<>();
+				HashMap<String, String> raw_el = rawIterator.next();
+				el.put("uid", raw_el.get("uid"));
+				el.put("sender_id", raw_el.get("sender_id"));
+				el.put("sender_name", raw_el.get("name"));
+				el.put("title", raw_el.get("title"));
+				el.put("msg", raw_el.get("msg"));
+				el.put("isResolved", raw_el.get("isResolved"));
+				el.put("timestamps_created", simpleDateFormat.format(new Date(Long.parseLong(raw_el.get("timestamps_created"))*1000)));
+				raw_filtered.add(el);
+			}
+			return raw_filtered;
+			
+		} catch (Exception e2) {
+			e2.printStackTrace();
+			return null;
+		}
+		
+		
+	}
+	
 }

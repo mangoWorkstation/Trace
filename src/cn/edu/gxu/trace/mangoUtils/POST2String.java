@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/**
+/** 将POST报文转换成为字符串，默认使用utf-8编码
  * @author 陈贵豪
  * @since 2017-12-10
  * @version 1.0

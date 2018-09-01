@@ -16,7 +16,7 @@ public class MutiTableResolver {
 	private static SqlManager sqlManager = SqlManager.getInstance();
 	
 	/**
-	 * 将返回一组数据，且用HashMap存储相关数据，全部使用String类型寄存，
+	 * 将返回一个数据，且用HashMap存储相关数据，全部使用String类型寄存，
 	 * 后续可以根据需要进行类型转换
 	 * @param sql 查询语句
 	 * @return

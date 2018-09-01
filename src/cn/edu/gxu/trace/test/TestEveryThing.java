@@ -9,8 +9,11 @@ import com.alibaba.fastjson.JSON;
 
 import cn.edu.gxu.trace.db.MutiTableResolver;
 import cn.edu.gxu.trace.db.SqlManager;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate;
 import cn.edu.gxu.trace.mangoUtils.Encryptor;
 import cn.edu.gxu.trace.mangoUtils.JsonEncodeFormatter;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate.ALERT_TYPE;
+import cn.edu.gxu.trace.mangoUtils.AlertTextTemplate.TEMPLATE_TYPE;
 
 public class TestEveryThing {
 	
@@ -36,12 +39,12 @@ public class TestEveryThing {
 //		String timestamp = "1532487333";
 //		String str = "q7b5jo7joq";
 //		
-		String source = "common_gxu";
-		String appKey = new Encryptor().SHA512(source);
+//		String source = "common_gxu";
+//		String appKey = new Encryptor().SHA512(source);
 		
 //		String result = new Encryptor().SHA512(appKey+timestamp+str);
 		
-		logger.debug(appKey);
+//		logger.debug(appKey);
 //		logger.debug(result);
 		
 //		logger.debug(Integer.valueOf("好"));
@@ -50,6 +53,9 @@ public class TestEveryThing {
 //		String sql = "select * from USER where idNum='45260919880706334X';";
 //		ArrayList<HashMap<String, String>> eArrayList = MutiTableResolver.query(sql);
 //		logger.debug(eArrayList.toString());
+		
+		logger.debug(AlertTextTemplate.getString(ALERT_TYPE.TEMP_AIR, TEMPLATE_TYPE.MSG, 50, "西大", "hello"));
+		
 	}
 
 }
